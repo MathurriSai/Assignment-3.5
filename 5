@@ -74,9 +74,7 @@ it will be in standby node.
 4.)xml
 
 
-Overriding The Default xml Properties In site.xml File
-
-It is possible to override some explict properties by configuring them. 
+Overriding The Default xml Properties In site.xml File:  It is possible to override some explict properties by configuring them. 
 
 For Example:
 
@@ -85,16 +83,62 @@ configuring in  hdfs-site.xml. by means of overriding the default parameter one 
 
 How site.xml Overrides default.xml Settings:
 
-    By default the repliaction factor will be 3 from DFSclient.java from anyone of teh jar files we can get all all default configaration details.
-    In reference there will be a specific path for default configaration from where it will be loaded for the working hadoop process.
-modified site.xml files which are loaded from the classpath are given to the developer for adding or deleting the objects into the Hadoop files which are aleady present   
-    
-Example:
+    * By default the repliaction factor will be 3 from DFSclient.java from anyone of teh jar files we can get all all default configaration details.
+    * In reference there will be a specific path for default configaration from where it will be loaded for the working hadoop process.
+modified site.xml files which are loaded from the classpath are given to the developer for adding or deleting the objects into the
+Hadoop files which are aleady present.
 
 
-The default configuration files have specific classpath from where it is always loaded in reference for working Hadoop. Similarly
-the modified site.xml files given to developer are loaded from classpath and checked for additional configuration objects created and 
-deployed into the existing Hadoop ecosystem overriding the default.xml files.
+Common things to all xml files :  
+    * Using the tags <final>,<property>,<name> etc. which should be placed inside the predefined tag called <configaration>.since
+HDFS is a open source framework to override the permission need to be provided by the owner by declaring the attributes. 
 
-We will look through the xml files wich we specifically need to alter files at the time of basic installation of the single node
-cluster.
+
+Settings that need to be done in Core-site.xml
+
+Some of the important properties are:
+
+*Name node address should be Configured
+*Rack awareness factor should be Configured 
+*Type of security should be selected
+
+<name>fs.default.name</name>:   It is compulsory needed for Hadoop single node configaration. 
+
+<value>hdfs://localhost:9000</value>: It's file system is classified into 2:
+1.)URI(Uniform Resource Identifier): Identifies teh file sysytem
+2.)Path : By fs.default.name it is used to find teh path of file system
+
+hdfs://<authority><port> (Syntax):
+
+*  By <authority><port> Hadoop tries to find the path where namenode wil be running.  when a user tries to specify the URI and path then
+then by request the it overrides and tends to find teh path of the file system. And its most important task is to delete the operation 
+in Hadoop.
+* hadoop.security.authentication, fs.trash.interval, fs.default.name are ovverridden name attributes.
+
+Settings To Be Done In HDFS-site.xml:
+
+-Configure port access
+-Manages ssl client authentication
+-Controls Network interface
+-Changes file permission
+
+
+Block replication can be configured using the below setting:
+
+<name>replication </name>
+
+<value>3</value>
+
+Maximum replication here is 512 and minimum is 1 and craetion time is 3.
+
+All these properties explained above sum up the requirement for a single node hadoop cluster.
+
+
+
+
+
+
+
+
+
+

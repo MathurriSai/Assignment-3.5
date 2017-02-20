@@ -1,0 +1,100 @@
+1. Explain what is High availability of Namenode
+
+    In HDFS cluster, Namenode is a single point of failure.The namenode if in case the host becomes unavailable or process become unavailable
+then the whole cluster will be unavailable until the namenode tends to restart or come up with a neew host.as well the secondary namenode
+will not provide with failover capability.
+    Consider a scenario where the unplanned vent gets crashed so that the cluster will be unavailable until the operator restart namenode.
+And there is a period called planned cluster downtime where which happens during the phase of planned maintainance which is upgarde of software 
+or hardware. 
+    HDFS HA is used for the above problem whcih helps to run two name nodes at a time in a same cluster.
+    And those two namenodes are called as activen namenode and standby namenode.
+    The secondary name node is not like standby namenode, when a host gets crashed then the standby will allow fast automatic failover to a
+new namenode. and it is not possible to have more than two namenode.
+     
+AUTOMATEED FAILOVER: HDP will protect the failure and will in parallel detect the namenode host.
+                     In order, to maintain  availability of the HDFSW service it will automatically go to standby node.
+HOT STANDBY: Upto current information about HDFS metadata can b provided by both active as well stand by name node.so there will not be any 
+             downtime for HDFS cluster.
+FULL STACK RESILIENCY:Without any loss of data the entire HDP stack can take care of namenode failure.this ensure that it can run 
+for a long time without any loss during namenode failure. 
+              There will be need for any shared storage.
+              
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+2. Explain what is check pointing and how it is useful
+
+    Check point is a technique of fault tolerance and once the fault is detected will restart the application which run for a
+long time from the beginning.
+    While checkpointing the application will be stopped and the data will be copied and the entire system will be restrated from the 
+beggining will seperate a certain memory and will start to execute then. while restarting there is no need to restart from the begining
+rather it could start from the poin where it had left from the stable storage.
+     To be crisp when the active node gets failed teh process will be shifted to secondary namenode but to take teh process fromk where it 
+have been left in the active node the check point and the fsi image will compare themselfes and will decide teh point of failure 
+from where it need it should be started in the standby node.
+    If in case there is a error or a message is missing then roll back can be commited which will roll back to the previous check poin t from 
+where it could be started.
+    
+-----------------------------------------------------------------------------------------------------------------------------------
+
+3. Explain what is HDFS federation
+
+    
+    HDFS fedeartion means that there will be a clear sepeartion between storage and name space at cluster level which enables scalablity 
+and isolation.Also block storage layer is enabled.
+
+The HDFS layers are cassified into two:
+1.)NAME SPACE: The process of name space is so simple it will do the process reagrding to the information what it recesives. it will sort, 
+list,create the files and add/delete/update depending upon the command it receives.
+    One name space and its bock are collectively called as Namespace volume.
+
+2.)STORAGE: it is sub divided into two
+
+a-BLOCK MANAGEMENT:It manages the process of deletion,creation and listing as well replication  management. 
+
+b-PHYSICAL STORAGE:It will access the read and write operation in blocks.
+
+For the entire cluster there wll be only one namenode available also it will be managed by a single name node.but this method is applicable
+for a small cluster where there is a limited storage in case of a huge storage then there must be certain limitations.
+
+
+    
+-------------------------------------------------------------------------------------------------------------------------------------
+4. What are the configuration files that are to be edited for sure while installing a hadoop cluster.
+
+  In order to test the sample code the single node will be used. when the tar file is downloaded from the hadoop by default
+it will be in standby node.
+  the xml iles will contain all the detailed properties of hadoop regarding hadoop limitations and its responsibilities.   
+    
+ While setting a single node hadoop cluster four files are mainly need to be configured and they are:    
+    
+1.)Core-site.xml
+2.)HDFS-site.xml
+3.)YARN-site.xml
+4.)xml
+
+
+Overriding The Default xml Properties In site.xml File
+
+It is possible to override some explict properties by configuring them. 
+
+For Example:
+
+    By default replication factor of Hadoop is 3 by overriding the repliaction factor can be made as 1 by means of explicitly 
+configuring in  hdfs-site.xml. by means of overriding the default parameter one can one can learn the internal working of hadoop. 
+
+How site.xml Overrides default.xml Settings:
+
+    By default the repliaction factor will be 3 from DFSclient.java from anyone of teh jar files we can get all all default configaration details.
+    In reference there will be a specific path for default configaration from where it will be loaded for the working hadoop process.
+modified site.xml files which are loaded from the classpath are given to the developer for adding or deleting the objects into the Hadoop files which are aleady present   
+    
+Example:
+
+
+The default configuration files have specific classpath from where it is always loaded in reference for working Hadoop. Similarly
+the modified site.xml files given to developer are loaded from classpath and checked for additional configuration objects created and 
+deployed into the existing Hadoop ecosystem overriding the default.xml files.
+
+We will look through the xml files wich we specifically need to alter files at the time of basic installation of the single node
+cluster.
